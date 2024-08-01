@@ -1,2 +1,2 @@
-# GNNs_TransIn_learning
+# A Critique on Transductive Evaluation for GNN Node Classification
 
