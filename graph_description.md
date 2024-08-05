@@ -1,5 +1,7 @@
 # Graph Splitting Statistics
 
+The tables below are descriptions for our splitted graphs, and each tuple includes data for train, validation and test in order.
+
 Amazon_Computers
 | nr.nodes              | nr.edges                 |   nr.nodes_feats |   nr.edge_feats |   nr.classes |   nr.labels |
 |:----------------------|:-------------------------|-----------------:|----------------:|-------------:|------------:|
