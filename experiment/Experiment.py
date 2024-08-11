@@ -66,13 +66,17 @@ class Experiment:
         if self.multi_label or self.classes ==2:
             self.out_f = nn.Sigmoid()
         else:
-            self.out_f = nn.Softmax()
+            self.out_f  = nn.Softmax() 
 
         for i in range(self.gnn_params['epochs']):
-            out = self.out_f(model(self.G_train.x, self.G_train.edge_index)[self.G_train.train_mask])
-            loss = loss_f(out, self.y_true_train)
+            out = model(self.G_train.x, self.G_train.edge_index)[self.G_train.train_mask]
+            if self.multi_label or self.classes ==2:
+                out = self.out_f(out)
+            loss = loss_f(out, self.y_true_train) # cross entropy requires logits
             with torch.no_grad():
-                out_val = self.out_f(model(self.G_val.x, self.G_val.edge_index)[self.G_val.val_mask])
+                out_val = model(self.G_val.x, self.G_val.edge_index)[self.G_val.val_mask]
+                if self.multi_label or self.classes ==2:
+                    out_val = self.out_f(out_val)
                 loss_val = loss_f(out_val, self.y_true_val)
                 if early_stopper.early_stop(loss_val.detach(), model):
                     print('Early stop epochs: ', i, ' min validation loss: ', early_stopper.min_validation_loss)             
@@ -86,7 +90,7 @@ class Experiment:
     def predict_gnn(self, gnn_model_name):
         model = torch.load(self.model_save_path + '\\' + self.data_label + '_'  + gnn_model_name + '.pt')
         with torch.no_grad():
-            prob_y = self.out_f(model(self.G_test.x, self.G_test.edge_index))
+            prob_y = self.out_f(model(self.G_test.x, self.G_test.edge_index)) # pred need to be prob
         return prob_y.to('cpu')
     
     def run(self, repeat=1):
