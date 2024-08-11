@@ -50,7 +50,7 @@ class Experiment:
             model = ARMA(**self.gnn_params['ARMA']).to('cuda')
         if gnn_model_name == 'SAGE':
             model = SAGE(**self.gnn_params['SAGE']).to('cuda')
-        if gnn_model_name == 'DEEPGCN5':
+        if gnn_model_name == 'DEEPGCN':
             model = DEEPGCN(**self.gnn_params['DEEPGCN']).to('cuda')
         if gnn_model_name == 'GIN':
             model = GIN(**self.gnn_params['GIN']).to('cuda')
